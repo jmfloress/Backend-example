@@ -5,7 +5,7 @@ const bookValidation = require('../validations/bookValidation');
 const routes = (Book) => {
     const bookRouter = express.Router();
 
-    const { getBooks, postBooks, getBookById, putBooks, deleteBookById, getBookByTitle, getBookByAuthor } = booksController(Book);
+    const { getBooks, postBooks, getBookById, putBooks, deleteBookById, getBookSearch } = booksController(Book);
 
     bookRouter.route('/books')
     .get(getBooks)
@@ -16,11 +16,8 @@ const routes = (Book) => {
     .put(bookValidation, putBooks)
     .delete(deleteBookById)
 
-    bookRouter.route('/books/:title/details')
-    .get(getBookByTitle)
-
-    bookRouter.route('/books/:author/details')
-    .get(getBookByAuthor)
+    bookRouter.route('/books/search')
+    .get(getBookSearch)
 
     return bookRouter;
 }

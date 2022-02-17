@@ -23,20 +23,21 @@ const booksController = (Book) => {
         res.json(response);
     }
 
-    const getBookByTitle = async (req, res) => {
-        const { params } = req;
-        const response = await Book.findOne({
-            "title": params.title
-        });
-        res.json(response);
-    }
-
-    const getBookByAuthor = async (req, res) => {
-        const { params } = req;
-        const response = await Book.findOne({
-            "author": params.author
-        });
-        res.json(response);
+    const getBookSearch = async (req, res) => {
+        const title = req.query.title;
+        const author = req.query.author;
+        if (title && author) {
+            const response = await Book.find({title, author});
+            res.json(response);
+        } else if (title) {
+            const response = await Book.find({title});
+            res.json(response);
+        } else if (author) {
+            const response = await Book.find({author});
+            res.json(response);
+        } else {
+            res.status(400).json('NULL');
+        }
     }
 
     const putBooks = async (req, res) => {
@@ -61,7 +62,7 @@ const booksController = (Book) => {
         res.status(202).json("Book has been deleted.");
     }
 
-    return { getBooks, postBooks, getBookById, putBooks, deleteBookById, getBookByTitle, getBookByAuthor };
+    return { getBooks, postBooks, getBookById, putBooks, deleteBookById, getBookSearch };
 }
 
 module.exports = booksController;
